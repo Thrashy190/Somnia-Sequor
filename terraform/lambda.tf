@@ -1,7 +1,7 @@
-data "archive_file" "lambda" {
+data "archive_file" "submit_dream" {
   type        = "zip"
-  source_dir  = "${path.module}/src"
-  output_path = "${path.module}/.build/dreams.zip"
+  source_dir  = "${path.module}/src/submit"
+  output_path = "${path.module}/.build/submit_dream.zip"
   excludes    = ["__pycache__", "*.pyc"]
 }
 
@@ -26,12 +26,18 @@ resource "aws_iam_role" "lambda" {
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
-# Least privilege: write to its own log group and send mail only from the verified sender
+# Least privilege: write to its own log group, put items in the dreams table and send mail only from the verified sender
 data "aws_iam_policy_document" "lambda" {
   statement {
     sid       = "WriteLogs"
     actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
     resources = ["${aws_cloudwatch_log_group.lambda.arn}:*"]
+  }
+
+  statement {
+    sid       = "StoreDream"
+    actions   = ["dynamodb:PutItem"]
+    resources = [aws_dynamodb_table.dreams.arn]
   }
 
   statement {
@@ -55,7 +61,7 @@ resource "aws_iam_role_policy" "lambda" {
 
 resource "aws_lambda_function" "submit_dream" {
   function_name = "${local.name}-submit-dream"
-  description   = "Receives the dream form and emails it through SES"
+  description   = "Receives the dream form, stores it in DynamoDB and emails it through SES"
   role          = aws_iam_role.lambda.arn
 
   runtime       = "python3.13"
@@ -64,11 +70,13 @@ resource "aws_lambda_function" "submit_dream" {
   memory_size   = var.lambda_memory_mb
   timeout       = var.lambda_timeout_seconds
 
-  filename         = data.archive_file.lambda.output_path
-  source_code_hash = data.archive_file.lambda.output_base64sha256
+  filename         = data.archive_file.submit_dream.output_path
+  source_code_hash = data.archive_file.submit_dream.output_base64sha256
 
   environment {
     variables = {
+      TABLE_NAME      = aws_dynamodb_table.dreams.name
+      DREAM_TTL_DAYS  = tostring(var.dreams_ttl_days)
       SENDER_EMAIL    = var.sender_email
       RECIPIENT_EMAIL = var.recipient_email
       ALLOWED_ORIGINS = join(",", local.allowed_origins)
