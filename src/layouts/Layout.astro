@@ -1,23 +1,109 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { defaultLang, locales, ogLocales, siteName, type Lang } from '../i18n/ui';
+import { alternates, localeUrl } from '../i18n/utils';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  imageAlt: string;
+}
+
+const { lang, title, description, imageAlt } = Astro.props;
+
+const canonical = localeUrl(lang);
+const ogImage = { src: new URL('/og.jpg', Astro.site).href, width: 1200, height: 630 };
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${localeUrl(defaultLang)}#website`,
+      url: localeUrl(defaultLang),
+      name: siteName,
+      inLanguage: locales,
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: lang,
+      isPartOf: { '@id': `${localeUrl(defaultLang)}#website` },
+      primaryImageOfPage: { '@type': 'ImageObject', url: ogImage.src, width: ogImage.width, height: ogImage.height },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Fija el tema antes del primer pintado: preferencia guardada o, si no hay, la del sistema -->
+    <script is:inline>
+      (() => {
+        let theme;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch {}
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
+    <link rel="canonical" href={canonical} />
+    {alternates().map(({ lang: hreflang, href }) => <link rel="alternate" hreflang={hreflang} href={href} />)}
+    <link rel="alternate" hreflang="x-default" href={localeUrl(defaultLang)} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <Font cssVariable="--font-cinzel" preload={[{ subset: 'latin' }]} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocales[lang]} />
+    {
+      locales
+        .filter((l) => l !== lang)
+        .map((l) => <meta property="og:locale:alternate" content={ogLocales[l]} />)
+    }
+    <meta property="og:image" content={ogImage.src} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content={String(ogImage.width)} />
+    <meta property="og:image:height" content={String(ogImage.height)} />
+    <meta property="og:image:alt" content={imageAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage.src} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="min-h-dvh overflow-x-hidden">
+    <slot />
+  </body>
+</html>

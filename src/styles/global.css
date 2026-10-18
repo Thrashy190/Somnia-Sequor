@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/* `dark:` se activa con data-theme="dark" en <html> (lo fija el script del layout) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* Tinta y papel: los dos únicos colores del sitio. Se invierten en modo oscuro. */
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+
+  --font-display: var(--font-cinzel), "Cinzel", Georgia, serif;
+
+  --animate-rise: rise 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Renglones de cuaderno que acompañan al texto al hacer scroll (textarea del sueño) */
+@utility lined {
+  --line: 2rem;
+  line-height: var(--line);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--line) - 1px),
+    color-mix(in srgb, var(--color-ink) 12%, transparent) calc(var(--line) - 1px),
+    color-mix(in srgb, var(--color-ink) 12%, transparent) var(--line)
+  );
+  background-attachment: local;
+}
+
+@layer base {
+  [data-theme="dark"] {
+    --color-ink: #f2efe9;
+    --color-paper: #0a0a0a;
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-paper font-display text-ink antialiased transition-colors duration-500;
+  }
+
+  ::selection {
+    @apply bg-ink text-paper;
+  }
+
+  :focus-visible {
+    @apply outline-1 outline-offset-4 outline-ink;
+  }
+
+  /* Quita las flechas del input numérico: queda como una línea de texto limpia */
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

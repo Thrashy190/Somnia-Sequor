@@ -1,0 +1,60 @@
+---
+import { Picture } from 'astro:assets';
+import angel from '../assets/illustrations/angel.jpg';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const displayLine = 'block text-[clamp(2.6rem,12.5vw,8.75rem)] leading-[1.08]';
+---
+
+<section aria-labelledby="hero-title" class="relative mx-auto max-w-6xl px-5 pt-4 pb-20 sm:px-8 md:pt-14 md:pb-28">
+  <Picture
+    src={angel}
+    alt={t('hero.imageAlt')}
+    formats={['avif', 'webp']}
+    widths={[320, 480, 640, 880]}
+    sizes="(min-width: 1152px) 420px, (min-width: 768px) 36vw, 58vw"
+    loading="eager"
+    fetchpriority="high"
+    pictureAttributes={{
+      class:
+        'pointer-events-none ml-auto block w-[58%] max-w-[420px] mix-blend-multiply dark:mix-blend-screen select-none animate-rise md:absolute md:-top-6 md:right-6 md:w-[36%]',
+    }}
+    class="h-auto w-full brightness-[1.03] contrast-[1.04] dark:invert"
+  />
+
+  <h1 id="hero-title" class="relative -mt-[18%] uppercase md:mt-0">
+    <span class="block animate-rise pb-[0.12em] text-[clamp(1.5rem,6.5vw,4.25rem)] leading-none md:pl-[4%]">
+      {t('hero.line1')}
+    </span>
+    <span class:list={[displayLine, 'animate-rise [animation-delay:150ms] md:pl-[16%]']}>
+      {t('hero.line2')}
+    </span>
+    <span class:list={[displayLine, 'animate-rise [animation-delay:300ms] md:pl-[8%]']}>
+      {t('hero.line3')}
+    </span>
+  </h1>
+
+  <p
+    class="mx-auto mt-16 max-w-[58ch] animate-rise text-center text-lg leading-relaxed text-balance [animation-delay:450ms] md:mt-24 md:text-xl md:leading-relaxed"
+  >
+    {t('hero.intro')}
+  </p>
+
+  <p class="mt-12 animate-rise text-center [animation-delay:600ms]">
+    <a
+      href="#share"
+      class="group inline-flex items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
+    >
+      {t('hero.cta')}
+      <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
+    </a>
+  </p>
+</section>

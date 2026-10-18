@@ -1,0 +1,72 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// El estado visual sale de data-theme en <html> (vía `dark:`), así no parpadea antes de que corra el JS.
+const option = 'cursor-pointer uppercase decoration-1 underline-offset-[6px] transition-opacity duration-300 hover:opacity-100 focus-visible:opacity-100';
+---
+
+<div
+  role="group"
+  aria-label={t('theme.toggle')}
+  class="flex items-center gap-1.5 text-xs tracking-[0.12em] sm:gap-3 sm:text-sm sm:tracking-[0.2em]"
+>
+  <button type="button" data-theme-option="light" aria-pressed="true" class:list={[option, 'underline dark:no-underline dark:opacity-40']}>
+    {t('theme.light')}
+  </button>
+  <span aria-hidden="true" class="text-ink/25">·</span>
+  <button type="button" data-theme-option="dark" aria-pressed="false" class:list={[option, 'opacity-40 dark:underline dark:opacity-100']}>
+    {t('theme.dark')}
+  </button>
+</div>
+
+<script>
+  type Theme = 'light' | 'dark';
+
+  const STORAGE_KEY = 'theme';
+  const paper: Record<Theme, string> = { light: '#ffffff', dark: '#0a0a0a' };
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-option]');
+  const systemDark = matchMedia('(prefers-color-scheme: dark)');
+
+  function apply(theme: Theme) {
+    root.dataset.theme = theme;
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.themeOption === theme)));
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => (meta.content = paper[theme]));
+  }
+
+  function stored(): Theme | null {
+    try {
+      const value = localStorage.getItem(STORAGE_KEY);
+      return value === 'light' || value === 'dark' ? value : null;
+    } catch {
+      return null;
+    }
+  }
+
+  buttons.forEach((button) =>
+    button.addEventListener('click', () => {
+      const theme = button.dataset.themeOption as Theme;
+      apply(theme);
+      try {
+        localStorage.setItem(STORAGE_KEY, theme);
+      } catch {
+        // Sin almacenamiento (modo privado): el cambio solo dura esta visita.
+      }
+    }),
+  );
+
+  // Mientras la persona no elija, se sigue el tema del sistema.
+  systemDark.addEventListener('change', (event) => {
+    if (!stored()) apply(event.matches ? 'dark' : 'light');
+  });
+
+  apply(root.dataset.theme === 'dark' ? 'dark' : 'light');
+</script>

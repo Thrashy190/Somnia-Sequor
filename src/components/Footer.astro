@@ -1,0 +1,41 @@
+---
+import { Picture } from 'astro:assets';
+import jester from '../assets/illustrations/jester.jpg';
+import { contactEmail, siteName, type Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="mx-auto max-w-6xl px-5 pt-12 pb-16 text-center sm:px-8 md:pb-20">
+  <Picture
+    src={jester}
+    alt=""
+    formats={['avif', 'webp']}
+    widths={[160, 240, 320]}
+    sizes="160px"
+    loading="lazy"
+    pictureAttributes={{ class: 'mx-auto block w-36 select-none pointer-events-none sm:w-40 mix-blend-multiply dark:mix-blend-screen', 'aria-hidden': 'true' }}
+    class="h-auto w-full brightness-[1.03] contrast-[1.04] dark:invert"
+  />
+
+  <p class="mx-auto mt-12 max-w-2xl text-xs leading-relaxed text-balance text-ink/70 sm:text-sm sm:leading-relaxed">
+    {t('footer.disclaimer')}
+  </p>
+
+  <p class="mt-10 text-xs tracking-[0.3em] uppercase">
+    {t('footer.email')}
+    <span aria-hidden="true" class="mx-2 text-ink/30">—</span>
+    <a href={`mailto:${contactEmail}`} class="tracking-normal normal-case underline-offset-4 hover:underline">
+      {contactEmail}
+    </a>
+  </p>
+
+  <p class="mt-10 text-[0.7rem] tracking-[0.2em] text-ink/45 uppercase">© {year} {siteName}</p>
+</footer>

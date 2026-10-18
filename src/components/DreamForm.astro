@@ -1,0 +1,255 @@
+---
+import { Picture } from 'astro:assets';
+import woman from '../assets/illustrations/woman.png';
+import type { HTMLAttributes } from 'astro/types';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+interface Field {
+  name: string;
+  label: string;
+  optional?: boolean;
+  attrs: HTMLAttributes<'input'>;
+}
+
+const fields: Field[] = [
+  {
+    name: 'alias',
+    label: t('form.alias'),
+    optional: true,
+    attrs: { placeholder: t('form.aliasPlaceholder'), autocomplete: 'nickname', maxlength: 80 },
+  },
+  { name: 'sex', label: t('form.sex'), attrs: { autocomplete: 'sex', maxlength: 60 } },
+  { name: 'country', label: t('form.country'), attrs: { autocomplete: 'country-name', maxlength: 80 } },
+  {
+    name: 'age',
+    label: t('form.age'),
+    attrs: { type: 'number', min: 0, max: 150, step: 1, inputmode: 'numeric', autocomplete: 'off', placeholder: '0 – 150' },
+  },
+];
+
+const labelClass = 'block text-xs tracking-[0.3em] uppercase';
+const controlBase =
+  'w-full rounded-none border-0 border-b border-ink bg-transparent px-0 text-base placeholder:text-ink/35 focus:shadow-[0_1px_0_0_var(--color-ink)] focus:outline-none aria-invalid:border-dashed';
+const errorClass = 'mt-2 text-sm text-ink';
+---
+
+<section id="share" aria-labelledby="share-title" class="mx-auto max-w-6xl scroll-mt-8 px-5 py-20 sm:px-8 md:py-28">
+  <div class="grid gap-16 md:grid-cols-12 md:gap-8">
+    <Picture
+      src={woman}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[280, 420, 560]}
+      sizes="(min-width: 1152px) 340px, 30vw"
+      loading="lazy"
+      pictureAttributes={{
+        class: 'hidden md:col-span-4 md:block md:self-start md:sticky md:top-12 select-none pointer-events-none mix-blend-multiply dark:mix-blend-screen',
+        'aria-hidden': 'true',
+      }}
+      class="h-auto w-full max-w-[340px] brightness-[1.03] contrast-[1.04] dark:invert"
+    />
+
+    <div class="md:col-span-7 md:col-start-6">
+      <h2 id="share-title" class="text-3xl leading-tight uppercase sm:text-4xl">
+        {t('form.heading')}
+      </h2>
+
+      <form
+        data-dream-form
+        data-lang={lang}
+        data-msg-required={t('form.errorRequired')}
+        data-msg-age={t('form.errorAge')}
+        data-msg-sending={t('form.sending')}
+        class="mt-14 space-y-12"
+        novalidate
+        method="post"
+      >
+        <div class="grid gap-x-10 gap-y-12 sm:grid-cols-2">
+          {
+            fields.map((field) => (
+              <div>
+                <label for={field.name} class={labelClass}>
+                  {field.label}
+                  {field.optional && (
+                    <span class="ml-1 tracking-normal text-ink/45 normal-case">({t('form.optional')})</span>
+                  )}
+                </label>
+                <input
+                  type="text"
+                  {...field.attrs}
+                  id={field.name}
+                  name={field.name}
+                  required={!field.optional}
+                  aria-describedby={`${field.name}-error`}
+                  class:list={[controlBase, 'mt-3 py-2']}
+                />
+                <p id={`${field.name}-error`} class={errorClass} data-error hidden></p>
+              </div>
+            ))
+          }
+        </div>
+
+        <div>
+          <label for="dream" class={labelClass}>{t('form.dream')}</label>
+          <textarea
+            id="dream"
+            name="dream"
+            rows="10"
+            maxlength="10000"
+            required
+            placeholder={t('form.dreamPlaceholder')}
+            aria-describedby="dream-error"
+            class:list={[controlBase, 'lined mt-4 min-h-[20rem] resize-y py-0']}></textarea>
+          <p id="dream-error" class={errorClass} data-error hidden></p>
+        </div>
+
+        {/* Trampa para bots: invisible para personas y lectores de pantalla */}
+        <div aria-hidden="true" class="absolute -left-[9999px] h-px w-px overflow-hidden">
+          <label for="website">Website</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="flex flex-col items-start gap-4">
+          <button
+            type="submit"
+            class="group inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-sm tracking-[0.35em] uppercase disabled:cursor-wait disabled:opacity-50"
+          >
+            <span data-submit-label>{t('form.submit')}</span>
+            <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </button>
+          <p data-submit-error role="alert" class="text-sm" hidden>{t('form.errorSubmit')}</p>
+        </div>
+      </form>
+
+      <div data-thanks role="status" aria-live="polite" tabindex="-1" class="mt-14 focus:outline-none" hidden>
+        <p class="text-4xl uppercase sm:text-5xl">{t('form.thanksTitle')}</p>
+        <p class="mt-6 max-w-[48ch] text-lg leading-relaxed">{t('form.thanksBody')}</p>
+        <button
+          type="button"
+          data-another
+          class="mt-12 inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
+        >
+          {t('form.another')}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  interface DreamSubmission {
+    alias: string;
+    sex: string;
+    country: string;
+    age: number;
+    dream: string;
+    lang: string;
+  }
+
+  // TODO: conectar aquí el servicio de envío (Formspree, Web3Forms, API propia…).
+  // Debe lanzar un error si el envío falla para que se muestre el mensaje correspondiente.
+  async function submitDream(submission: DreamSubmission): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    if (import.meta.env.DEV) console.info('[somnia] dream submission', submission);
+  }
+
+  const form = document.querySelector<HTMLFormElement>('[data-dream-form]');
+  const thanks = document.querySelector<HTMLElement>('[data-thanks]');
+
+  if (form && thanks) {
+    const { msgRequired = '', msgAge = '', msgSending = '', lang = '' } = form.dataset;
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const submitError = form.querySelector<HTMLElement>('[data-submit-error]')!;
+    const defaultLabel = submitLabel.textContent ?? '';
+    const controls = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[aria-describedby], textarea'),
+    );
+    let attempted = false;
+
+    const errorFor = (control: HTMLInputElement | HTMLTextAreaElement): string => {
+      const value = control.value.trim();
+      if (control.name === 'age') {
+        if (control instanceof HTMLInputElement && control.validity.badInput) return msgAge;
+        if (!value) return msgRequired;
+        const age = Number(value);
+        return Number.isInteger(age) && age >= 0 && age <= 150 ? '' : msgAge;
+      }
+      return control.required && !value ? msgRequired : '';
+    };
+
+    const showError = (control: HTMLInputElement | HTMLTextAreaElement): boolean => {
+      const message = errorFor(control);
+      const slot = document.getElementById(`${control.name}-error`);
+      if (slot) {
+        slot.textContent = message ? `— ${message}` : '';
+        slot.hidden = !message;
+      }
+      if (message) control.setAttribute('aria-invalid', 'true');
+      else control.removeAttribute('aria-invalid');
+      return !message;
+    };
+
+    controls.forEach((control) =>
+      control.addEventListener('input', () => {
+        if (attempted) showError(control);
+      }),
+    );
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      attempted = true;
+      submitError.hidden = true;
+
+      const invalid = controls.filter((control) => !showError(control));
+      if (invalid.length) {
+        invalid[0].focus();
+        return;
+      }
+
+      const data = new FormData(form);
+      const field = (name: string) => String(data.get(name) ?? '').trim();
+
+      submitButton.disabled = true;
+      submitLabel.textContent = msgSending;
+
+      try {
+        // Si la trampa para bots tiene contenido, se finge el éxito sin enviar nada.
+        if (!field('website')) {
+          await submitDream({
+            alias: field('alias'),
+            sex: field('sex'),
+            country: field('country'),
+            age: Number(field('age')),
+            dream: field('dream'),
+            lang,
+          });
+        }
+        form.reset();
+        attempted = false;
+        form.hidden = true;
+        thanks.hidden = false;
+        thanks.focus();
+      } catch {
+        submitError.hidden = false;
+      } finally {
+        submitButton.disabled = false;
+        submitLabel.textContent = defaultLabel;
+      }
+    });
+
+    thanks.querySelector('[data-another]')?.addEventListener('click', () => {
+      thanks.hidden = true;
+      form.hidden = false;
+      document.getElementById('alias')?.focus();
+    });
+  }
+</script>

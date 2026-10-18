@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Divider from './Divider.astro';
+import DreamForm from './DreamForm.astro';
+import Footer from './Footer.astro';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Layout lang={lang} title={t('meta.title')} description={t('meta.description')} imageAlt={t('hero.imageAlt')}>
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <Divider />
+    <DreamForm lang={lang} />
+    <Divider />
+  </main>
+  <Footer lang={lang} />
+</Layout>

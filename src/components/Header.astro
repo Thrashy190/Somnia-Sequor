@@ -1,0 +1,23 @@
+---
+import LanguageSelector from './LanguageSelector.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { siteName, type Lang } from '../i18n/ui';
+import { localePath } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<header class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5 py-6 sm:px-8 md:py-8">
+  <a href={localePath(lang)} class="text-xs tracking-[0.35em] uppercase sm:text-sm">
+    {siteName}
+  </a>
+  <div class="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-3 sm:w-auto sm:justify-end sm:gap-x-8">
+    <LanguageSelector lang={lang} />
+    <span aria-hidden="true" class="hidden h-3 w-px bg-ink/25 sm:block"></span>
+    <ThemeToggle lang={lang} />
+  </div>
+</header>
