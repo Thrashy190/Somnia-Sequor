@@ -4,6 +4,8 @@ export const languages = {
   pt: 'Português',
   fr: 'Français',
   de: 'Deutsch',
+  ja: '日本語',
+  ko: '한국어',
 } as const;
 
 export type Lang = keyof typeof languages;
@@ -19,6 +21,8 @@ export const ogLocales: Record<Lang, string> = {
   pt: 'pt_BR',
   fr: 'fr_FR',
   de: 'de_DE',
+  ja: 'ja_JP',
+  ko: 'ko_KR',
 };
 
 export const siteName = 'Somnia Sequor';
@@ -233,5 +237,87 @@ export const ui = {
     'footer.disclaimer':
       'Wir glauben an den unschätzbaren Wert menschlicher Erfahrung. Deshalb wird keine künstliche Intelligenz jeglicher Art mit den Träumen oder sonstigen Informationen, die uns anvertraut werden, gespeist.',
     'footer.email': 'E-Mail',
+  },
+  ja: {
+    'meta.title': '奇妙な夢を見ましたか？ — Somnia Sequor',
+    'meta.description':
+      '私たちは、近ごろ増えている奇妙で説明のつかない夢について調査しています。あなたの夢を Somnia Sequor に匿名で共有してください。',
+
+    'nav.home': 'ホーム',
+    'nav.language': '言語',
+    'theme.toggle': 'テーマを切り替える',
+    'theme.light': 'ライト',
+    'theme.dark': 'ダーク',
+
+    'hero.line1': '奇妙な',
+    'hero.line2': '夢を',
+    'hero.line3': '見ましたか？',
+    'hero.intro':
+      '私たちは、近ごろ増えている奇妙で説明のつかない夢について調査しています。風変わりな夢、不安になる夢、恐ろしい夢を見たことがある方、あるいは夢の中で普段とは違う出来事を体験した方は、ぜひ共有してご協力ください。',
+    'hero.cta': 'あなたの夢を共有する',
+    'hero.imageAlt': 'ルネサンス様式で描かれた、落下する翼のある人物の版画',
+
+    'form.heading': '匿名で共有してください',
+    'form.optional': '任意',
+    'form.alias': 'ニックネーム',
+    'form.aliasPlaceholder': 'お名前をお聞かせください',
+    'form.sex': '性別',
+    'form.country': '国',
+    'form.age': '年齢',
+    'form.dream': '夢',
+    'form.dreamPlaceholder': '覚えていることをできるだけ詳しく教えてください…',
+    'form.submit': '夢を送信',
+    'form.sending': '送信中…',
+    'form.errorRequired': 'この項目は必須です。',
+    'form.errorAge': '0〜150の年齢を入力してください。',
+    'form.errorSubmit': '問題が発生しました。もう一度お試しください。',
+    'form.thanksTitle': 'ありがとうございます。',
+    'form.thanksBody': 'あなたの夢を受け取りました。大切に保管します。',
+    'form.another': '別の夢を共有する',
+
+    'footer.disclaimer':
+      '私たちは人間の体験にかけがえのない価値があると考えています。そのため、お寄せいただいた夢やその他の情報を、いかなる人工知能にも学習させることはありません。',
+    'footer.email': 'メール',
+  },
+  ko: {
+    'meta.title': '이상한 꿈을 꾸셨나요? — Somnia Sequor',
+    'meta.description':
+      '저희는 최근 늘어나고 있는 이상하고 설명할 수 없는 꿈을 조사하고 있습니다. 당신의 꿈을 Somnia Sequor에 익명으로 공유해 주세요.',
+
+    'nav.home': '홈',
+    'nav.language': '언어',
+    'theme.toggle': '테마 전환',
+    'theme.light': '라이트',
+    'theme.dark': '다크',
+
+    'hero.line1': '이상한',
+    'hero.line2': '꿈을',
+    'hero.line3': '꾸셨나요?',
+    'hero.intro':
+      '저희는 최근 늘어나고 있는 이상하고 설명할 수 없는 꿈을 조사하고 있습니다. 기이하거나 불안하거나 무서운 꿈을 꾸셨거나, 꿈속에서 평소와 다른 일을 겪으셨다면 공유해 주셔서 저희를 도와주세요.',
+    'hero.cta': '당신의 꿈을 공유하세요',
+    'hero.imageAlt': '르네상스 양식으로 새긴, 추락하는 날개 달린 인물의 판화',
+
+    'form.heading': '익명으로 공유하세요',
+    'form.optional': '선택',
+    'form.alias': '닉네임',
+    'form.aliasPlaceholder': '어떻게 불러드릴까요?',
+    'form.sex': '성별',
+    'form.country': '국가',
+    'form.age': '나이',
+    'form.dream': '꿈',
+    'form.dreamPlaceholder': '기억나는 만큼 최대한 자세히 꿈 이야기를 들려주세요…',
+    'form.submit': '꿈 보내기',
+    'form.sending': '보내는 중…',
+    'form.errorRequired': '필수 입력 항목입니다.',
+    'form.errorAge': '0에서 150 사이의 나이를 입력해 주세요.',
+    'form.errorSubmit': '문제가 발생했습니다. 다시 시도해 주세요.',
+    'form.thanksTitle': '감사합니다.',
+    'form.thanksBody': '꿈이 잘 접수되었습니다. 소중하게 간직하겠습니다.',
+    'form.another': '다른 꿈 공유하기',
+
+    'footer.disclaimer':
+      '저희는 인간의 경험이 매우 소중하다고 믿습니다. 따라서 공유해 주신 꿈이나 그 밖의 어떤 정보도 어떠한 종류의 인공지능에도 학습시키지 않을 것입니다.',
+    'footer.email': '이메일',
   },
 } as const satisfies Record<Lang, Record<UiKey, string>>;

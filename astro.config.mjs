@@ -4,7 +4,7 @@ import { defineConfig, envField, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
-const locales = ['es', 'en', 'pt', 'fr', 'de'];
+const locales = ['es', 'en', 'pt', 'fr', 'de', 'ja', 'ko'];
 
 // https://astro.build/config
 export default defineConfig({

@@ -17,7 +17,7 @@ SENDER_EMAIL = os.environ["SENDER_EMAIL"]
 RECIPIENT_EMAIL = os.environ["RECIPIENT_EMAIL"]
 ALLOWED_ORIGINS = {o.strip() for o in os.environ["ALLOWED_ORIGINS"].split(",") if o.strip()}
 
-LANGS = {"es", "en", "pt", "fr", "de"}
+LANGS = {"es", "en", "pt", "fr", "de", "ja", "ko"}
 MAX_BODY_BYTES = 64 * 1024
 LIMITS = {"alias": 80, "sex": 60, "country": 80, "dream": 10_000}
 

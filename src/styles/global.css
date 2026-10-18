@@ -8,7 +8,7 @@
   --color-ink: #000000;
   --color-paper: #ffffff;
 
-  --font-display: var(--font-cinzel), "Cinzel", Georgia, serif;
+  --font-display: var(--font-cinzel), "Cinzel", Georgia, "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", "Batang", "AppleMyungjo", "Noto Serif KR", serif;
 
   --animate-rise: rise 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 
