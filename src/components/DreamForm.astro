@@ -35,10 +35,10 @@ const fields: Field[] = [
   },
 ];
 
-const labelClass = 'block text-xs tracking-[0.3em] uppercase';
+const labelClass = 'block text-lg tracking-[0.15em] uppercase';
 const controlBase =
   'w-full rounded-none border-0 border-b border-ink bg-transparent px-0 text-base placeholder:text-ink/35 focus:shadow-[0_1px_0_0_var(--color-ink)] focus:outline-none aria-invalid:border-dashed';
-const errorClass = 'mt-2 text-sm text-ink';
+const errorClass = 'mt-2 text-base text-ink';
 ---
 
 <section id="share" aria-labelledby="share-title" class="mx-auto max-w-6xl scroll-mt-8 px-5 py-20 sm:px-8 md:py-28">
@@ -120,22 +120,22 @@ const errorClass = 'mt-2 text-sm text-ink';
         <div class="flex flex-col items-start gap-4">
           <button
             type="submit"
-            class="group touch-area inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-sm tracking-[0.35em] uppercase disabled:cursor-wait disabled:opacity-50"
+            class="group touch-area inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-base tracking-[0.35em] uppercase disabled:cursor-wait disabled:opacity-50"
           >
             <span data-submit-label>{t('form.submit')}</span>
             <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </button>
-          <p data-submit-error role="alert" class="text-sm" hidden>{t('form.errorSubmit')}</p>
+          <p data-submit-error role="alert" class="text-base" hidden>{t('form.errorSubmit')}</p>
         </div>
       </form>
 
       <div data-thanks role="status" aria-live="polite" tabindex="-1" class="mt-14 focus:outline-none" hidden>
         <p class="text-4xl uppercase sm:text-5xl">{t('form.thanksTitle')}</p>
-        <p class="mt-6 max-w-[48ch] text-lg leading-relaxed">{t('form.thanksBody')}</p>
+        <p class="mt-6 max-w-[48ch] text-xl leading-relaxed md:text-2xl">{t('form.thanksBody')}</p>
         <button
           type="button"
           data-another
-          class="touch-area mt-12 inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
+          class="touch-area mt-12 inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-sm tracking-[0.35em] uppercase sm:text-base"
         >
           {t('form.another')}
         </button>
@@ -145,6 +145,8 @@ const errorClass = 'mt-2 text-sm text-ink';
 </section>
 
 <script>
+  import { PUBLIC_API_URL } from 'astro:env/client';
+
   interface DreamSubmission {
     alias: string;
     sex: string;
@@ -154,11 +156,23 @@ const errorClass = 'mt-2 text-sm text-ink';
     lang: string;
   }
 
-  // TODO: conectar aquí el servicio de envío (Formspree, Web3Forms, API propia…).
-  // Debe lanzar un error si el envío falla para que se muestre el mensaje correspondiente.
+  // Envía el sueño a la API (terraform/). Lanza si falla, para mostrar el mensaje de error.
   async function submitDream(submission: DreamSubmission): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    if (import.meta.env.DEV) console.info('[somnia] dream submission', submission);
+    if (!PUBLIC_API_URL) {
+      // Sin API configurada: en desarrollo se simula; en producción nunca se finge un éxito.
+      if (!import.meta.env.DEV) throw new Error('PUBLIC_API_URL no está configurada');
+      console.warn('[somnia] PUBLIC_API_URL sin definir: envío simulado', submission);
+      await new Promise((resolve) => setTimeout(resolve, 700));
+      return;
+    }
+
+    const response = await fetch(PUBLIC_API_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(submission),
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!response.ok) throw new Error(`La API respondió ${response.status}`);
   }
 
   const form = document.querySelector<HTMLFormElement>('[data-dream-form]');

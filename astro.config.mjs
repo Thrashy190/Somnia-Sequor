@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig, envField, fontProviders } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -30,6 +30,13 @@ export default defineConfig({
       fallbacks: ['Georgia', 'serif'],
     },
   ],
+
+  env: {
+    schema: {
+      // URL del POST /dreams (output `api_url` de terraform/). Se fija al compilar.
+      PUBLIC_API_URL: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
 
   vite: {
     plugins: [tailwindcss()],
