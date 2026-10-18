@@ -8,10 +8,12 @@ Privacidad: el contenido del sueño nunca se escribe en los logs.
 import base64
 import json
 import os
-import re
+from datetime import datetime, timezone
 
 import boto3
 from botocore.exceptions import BotoCoreError, ClientError
+
+from email_template import render_html, render_text, subject_for
 
 SENDER_EMAIL = os.environ["SENDER_EMAIL"]
 RECIPIENT_EMAIL = os.environ["RECIPIENT_EMAIL"]
@@ -35,11 +37,6 @@ def respond(status: int, payload: dict) -> dict:
         "headers": {"content-type": "application/json"},
         "body": json.dumps(payload),
     }
-
-
-def one_line(value: str) -> str:
-    """Quita saltos de línea y caracteres de control (evita inyección en el asunto)."""
-    return re.sub(r"[\x00-\x1f\x7f]+", " ", value).strip()
 
 
 def parse_body(event: dict) -> dict:
@@ -89,28 +86,17 @@ def validate(data: dict) -> dict:
 
 
 def send_email(dream: dict) -> None:
-    subject = one_line(f"Nuevo sueño · {dream['country']} · {dream['age']} años ({dream['lang']})")
-    body = "\n".join(
-        [
-            f"Alias:  {one_line(dream['alias']) or '(anónimo)'}",
-            f"Sexo:   {one_line(dream['sex'])}",
-            f"País:   {one_line(dream['country'])}",
-            f"Edad:   {dream['age']}",
-            f"Idioma: {dream['lang']}",
-            "",
-            "Sueño:",
-            "",
-            dream["dream"],
-            "",
-        ]
-    )
+    received_at = datetime.now(timezone.utc)
     ses.send_email(
         FromEmailAddress=SENDER_EMAIL,
         Destination={"ToAddresses": [RECIPIENT_EMAIL]},
         Content={
             "Simple": {
-                "Subject": {"Data": subject[:200], "Charset": "UTF-8"},
-                "Body": {"Text": {"Data": body, "Charset": "UTF-8"}},
+                "Subject": {"Data": subject_for(dream), "Charset": "UTF-8"},
+                "Body": {
+                    "Text": {"Data": render_text(dream, received_at), "Charset": "UTF-8"},
+                    "Html": {"Data": render_html(dream, received_at), "Charset": "UTF-8"},
+                },
             }
         },
     )
