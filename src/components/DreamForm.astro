@@ -107,7 +107,7 @@ const errorClass = 'mt-2 text-sm text-ink';
             required
             placeholder={t('form.dreamPlaceholder')}
             aria-describedby="dream-error"
-            class:list={[controlBase, 'lined mt-4 min-h-[20rem] resize-y py-0']}></textarea>
+            class:list={[controlBase, 'lined mt-4 min-h-[20rem] resize-y py-0 leading-8']}></textarea>
           <p id="dream-error" class={errorClass} data-error hidden></p>
         </div>
 
@@ -120,7 +120,7 @@ const errorClass = 'mt-2 text-sm text-ink';
         <div class="flex flex-col items-start gap-4">
           <button
             type="submit"
-            class="group inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-sm tracking-[0.35em] uppercase disabled:cursor-wait disabled:opacity-50"
+            class="group touch-area inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-sm tracking-[0.35em] uppercase disabled:cursor-wait disabled:opacity-50"
           >
             <span data-submit-label>{t('form.submit')}</span>
             <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -135,7 +135,7 @@ const errorClass = 'mt-2 text-sm text-ink';
         <button
           type="button"
           data-another
-          class="mt-12 inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
+          class="touch-area mt-12 inline-flex cursor-pointer items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
         >
           {t('form.another')}
         </button>

@@ -27,7 +27,7 @@ const t = useTranslations(lang);
             title={languages[locale]}
             aria-current={locale === lang ? 'page' : undefined}
             class:list={[
-              'uppercase transition-opacity duration-300',
+              'touch-area uppercase transition-opacity duration-300',
               locale === lang
                 ? 'underline decoration-1 underline-offset-[6px]'
                 : 'opacity-40 hover:opacity-100 focus-visible:opacity-100',

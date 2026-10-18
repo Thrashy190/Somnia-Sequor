@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 // El estado visual sale de data-theme en <html> (vía `dark:`), así no parpadea antes de que corra el JS.
-const option = 'cursor-pointer uppercase decoration-1 underline-offset-[6px] transition-opacity duration-300 hover:opacity-100 focus-visible:opacity-100';
+const option = 'touch-area cursor-pointer uppercase decoration-1 underline-offset-[6px] transition-opacity duration-300 hover:opacity-100 focus-visible:opacity-100';
 ---
 
 <div

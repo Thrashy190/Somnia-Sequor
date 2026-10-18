@@ -38,6 +38,16 @@
   background-attachment: local;
 }
 
+/* Amplía la zona táctil de enlaces y botones de texto (≈45px de alto) sin mover el diseño */
+@utility touch-area {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -0.9rem -0.35rem;
+  }
+}
+
 @layer base {
   [data-theme="dark"] {
     --color-ink: #f2efe9;

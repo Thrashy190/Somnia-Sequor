@@ -20,12 +20,12 @@ const displayLine = 'block text-[clamp(2.6rem,12.5vw,8.75rem)] leading-[1.08]';
     alt={t('hero.imageAlt')}
     formats={['avif', 'webp']}
     widths={[320, 480, 640, 880]}
-    sizes="(min-width: 1152px) 420px, (min-width: 768px) 36vw, 58vw"
+    sizes="(min-width: 1152px) 420px, (min-width: 1024px) 36vw, (min-width: 768px) 30vw, 58vw"
     loading="eager"
     fetchpriority="high"
     pictureAttributes={{
       class:
-        'pointer-events-none ml-auto block w-[58%] max-w-[420px] mix-blend-multiply dark:mix-blend-screen select-none animate-rise md:absolute md:-top-6 md:right-6 md:w-[36%]',
+        'pointer-events-none ml-auto block w-[58%] max-w-[420px] mix-blend-multiply dark:mix-blend-screen select-none animate-rise md:absolute md:-top-6 md:right-4 md:w-[30%] lg:right-6 lg:w-[36%]',
     }}
     class="h-auto w-full brightness-[1.03] contrast-[1.04] dark:invert"
   />
@@ -51,7 +51,7 @@ const displayLine = 'block text-[clamp(2.6rem,12.5vw,8.75rem)] leading-[1.08]';
   <p class="mt-12 animate-rise text-center [animation-delay:600ms]">
     <a
       href="#share"
-      class="group inline-flex items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
+      class="group touch-area inline-flex items-center gap-3 border-b border-ink pb-1 text-xs tracking-[0.35em] uppercase sm:text-sm"
     >
       {t('hero.cta')}
       <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
