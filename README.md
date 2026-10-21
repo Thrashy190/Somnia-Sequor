@@ -79,7 +79,7 @@ Para añadir un idioma:
 
 ## Formulario y API
 
-El formulario pide alias (opcional), sexo, país, edad (0–150) y el sueño. Valida en el cliente y vuelve a validar en la Lambda. Envía un `POST` a la URL de `PUBLIC_API_URL`, que se fija al compilar:
+El formulario pide alias (opcional), género, país, edad (0–150) y el sueño. Valida en el cliente y vuelve a validar en la Lambda. Envía un `POST` a la URL de `PUBLIC_API_URL`, que se fija al compilar:
 
 - Producción: `.env.production` (la URL es pública, no es un secreto). Sale de `terraform output -raw api_url`.
 - Cloudflare Pages: si defines `PUBLIC_API_URL` en el panel, tiene prioridad.

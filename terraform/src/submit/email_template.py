@@ -62,7 +62,7 @@ def render_text(dream: dict, received_at) -> str:
             "✦ Un nuevo sueño ✦",
             "",
             f"Alias:  {one_line(dream['alias']) or '(anónimo)'}",
-            f"Sexo:   {one_line(dream['sex'])}",
+            f"Género: {one_line(dream['sex'])}",
             f"País:   {one_line(dream['country'])}",
             f"Edad:   {dream['age']}",
             f"Idioma: {LANG_NAMES.get(dream['lang'], dream['lang'])}",
@@ -158,7 +158,7 @@ def render_html(dream: dict, received_at) -> str:
 
     <tr><td class="gutter" style="padding:0 40px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-        {_row(("Alias", one_line(dream["alias"])), ("Sexo", one_line(dream["sex"])))}
+        {_row(("Alias", one_line(dream["alias"])), ("Género", one_line(dream["sex"])))}
         {_row(("País", one_line(dream["country"])), ("Edad", str(dream["age"])))}
       </table>
     </td></tr>
