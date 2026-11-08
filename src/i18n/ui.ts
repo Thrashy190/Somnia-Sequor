@@ -42,8 +42,6 @@ const es = {
   'hero.line1': '¿Has tenido',
   'hero.line2': 'sueños',
   'hero.line3': 'extraños?',
-  'hero.intro':
-    'Estamos investigando un reciente aumento de sueños extraños e inexplicables, si has tenido algún tipo de sueño peculiar, angustiante, terrorífico, o has experimentado alguna actividad inusual en tus sueños, puedes ayudarnos compartiéndolo.',
   'hero.cta': 'Comparte tu sueño',
   'hero.imageAlt': 'Grabado de una figura alada que cae, al estilo renacentista',
 
@@ -88,8 +86,6 @@ export const ui = {
     'hero.line1': 'Have you had',
     'hero.line2': 'strange',
     'hero.line3': 'dreams?',
-    'hero.intro':
-      'We are investigating a recent rise in strange and unexplainable dreams. If you have had any kind of peculiar, distressing or terrifying dream, or have experienced any unusual activity in your dreams, you can help us by sharing it.',
     'hero.cta': 'Share your dream',
     'hero.imageAlt': 'Renaissance-style engraving of a winged figure falling',
 
@@ -129,8 +125,6 @@ export const ui = {
     'hero.line1': 'Você já teve',
     'hero.line2': 'sonhos',
     'hero.line3': 'estranhos?',
-    'hero.intro':
-      'Estamos investigando um aumento recente de sonhos estranhos e inexplicáveis. Se você teve algum tipo de sonho peculiar, angustiante, aterrorizante, ou vivenciou alguma atividade incomum em seus sonhos, pode nos ajudar compartilhando-o.',
     'hero.cta': 'Compartilhe seu sonho',
     'hero.imageAlt': 'Gravura de uma figura alada caindo, em estilo renascentista',
 
@@ -170,8 +164,6 @@ export const ui = {
     'hero.line1': 'Avez-vous fait',
     'hero.line2': 'des rêves',
     'hero.line3': 'étranges ?',
-    'hero.intro':
-      'Nous enquêtons sur une récente recrudescence de rêves étranges et inexplicables. Si vous avez fait un rêve singulier, angoissant ou terrifiant, ou si vous avez vécu une activité inhabituelle dans vos rêves, vous pouvez nous aider en le partageant.',
     'hero.cta': 'Partagez votre rêve',
     'hero.imageAlt': 'Gravure de style Renaissance d’une figure ailée en chute',
 
@@ -211,8 +203,6 @@ export const ui = {
     'hero.line1': 'Hattest du',
     'hero.line2': 'seltsame',
     'hero.line3': 'Träume?',
-    'hero.intro':
-      'Wir untersuchen eine jüngste Zunahme seltsamer und unerklärlicher Träume. Wenn du einen eigenartigen, beklemmenden oder furchterregenden Traum hattest oder ungewöhnliche Aktivitäten in deinen Träumen erlebt hast, kannst du uns helfen, indem du ihn mit uns teilst.',
     'hero.cta': 'Teile deinen Traum',
     'hero.imageAlt': 'Kupferstich einer stürzenden geflügelten Gestalt im Stil der Renaissance',
 
@@ -252,8 +242,6 @@ export const ui = {
     'hero.line1': '奇妙な',
     'hero.line2': '夢を',
     'hero.line3': '見ましたか？',
-    'hero.intro':
-      '私たちは、近ごろ増えている奇妙で説明のつかない夢について調査しています。風変わりな夢、不安になる夢、恐ろしい夢を見たことがある方、あるいは夢の中で普段とは違う出来事を体験した方は、ぜひ共有してご協力ください。',
     'hero.cta': 'あなたの夢を共有する',
     'hero.imageAlt': 'ルネサンス様式で描かれた、落下する翼のある人物の版画',
 
@@ -293,8 +281,6 @@ export const ui = {
     'hero.line1': '이상한',
     'hero.line2': '꿈을',
     'hero.line3': '꾸셨나요?',
-    'hero.intro':
-      '저희는 최근 늘어나고 있는 이상하고 설명할 수 없는 꿈을 조사하고 있습니다. 기이하거나 불안하거나 무서운 꿈을 꾸셨거나, 꿈속에서 평소와 다른 일을 겪으셨다면 공유해 주셔서 저희를 도와주세요.',
     'hero.cta': '당신의 꿈을 공유하세요',
     'hero.imageAlt': '르네상스 양식으로 새긴, 추락하는 날개 달린 인물의 판화',
 
